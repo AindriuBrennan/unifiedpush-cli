@@ -2,7 +2,7 @@
 import {Arguments} from 'yargs';
 import {UnifiedPushAdminClientMock, ConsoleMock} from '../../mocks';
 import {handler} from '../../../src/cmds/variants-cmds/list';
-import {VariantFilter} from '@aerogear/unifiedpush-admin-client';
+import {VariantFilter} from '@aerogear/unifiedpush-admin-client/dist/src/commands/variants/Variant';
 
 beforeEach(() => {
   // Clear all instances and calls to constructor and all methods:

@@ -24,9 +24,9 @@ export const builder = (yargs: Argv) => {
 };
 
 export const handler = async (argv: Arguments<Record<string, string>>) => {
-  await UPSAdminClientFactory.getUpsAdminInstance(argv).applications.rename(
-    argv.appId,
-    argv.name
-  );
+  await UPSAdminClientFactory.getUpsAdminInstance(argv)
+    .applications.update(argv.appId)
+    .withName(argv.name)
+    .execute();
   console.log('Application renamed successfully');
 };
