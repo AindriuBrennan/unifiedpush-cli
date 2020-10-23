@@ -31,6 +31,8 @@ describe('Rename Application', () => {
       url: 'http://localhost:9999',
       appId: '2:2',
       name: 'NewName',
+      _: [] as string[],
+      $0: '',
     });
     expect(ConsoleMock.log).toHaveBeenCalled();
     expect(ConsoleMock.log).toHaveBeenCalledWith(
