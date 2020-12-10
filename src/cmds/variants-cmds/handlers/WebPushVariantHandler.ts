@@ -6,7 +6,6 @@ import {VariantHandler} from './VariantHandler';
 import {Variant} from '@aerogear/unifiedpush-admin-client';
 import {UPSAdminClientFactory} from '../../../utils/UPSAdminClientFactory';
 import {VariantDef} from './VariantDef';
-import {WebPushVariant} from '@aerogear/unifiedpush-admin-client';
 
 export class WebPushVariantHandler implements VariantHandler {
   private readonly questions = (def: VariantDef): Array<{}> => [
@@ -65,6 +64,7 @@ export class WebPushVariantHandler implements VariantHandler {
     return UPSAdminClientFactory.getUpsAdminInstance(argv)
       .variants.web_push.create(argv.appId as string)
       .withAlias(answers['alias'])
+      .withDefinition(def || {})
       .execute();
   }
 }

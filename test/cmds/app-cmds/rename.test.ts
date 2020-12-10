@@ -1,7 +1,11 @@
-import {Arguments} from 'yargs';
-import {UnifiedPushAdminClientMock, ConsoleMock} from '../../mocks';
+import {ConsoleMock} from '../../mocks';
 import {handler} from '../../../src/cmds/app-cmds/rename';
 import * as inquirer from 'inquirer';
+import {
+  createApplications,
+  getAllApplications,
+  initMockEngine,
+} from '../../mocks/UPSMock';
 
 jest.mock('inquirer', () => ({
   prompt: jest
@@ -12,8 +16,7 @@ jest.mock('inquirer', () => ({
 
 beforeEach(() => {
   ConsoleMock.init();
-  // Clear all instances and calls to constructor and all methods:
-  UnifiedPushAdminClientMock.mockClear();
+  initMockEngine();
   ConsoleMock.mockClear();
   const promptMock = (inquirer.prompt as unknown) as jest.Mock<
     typeof inquirer.prompt
@@ -27,10 +30,21 @@ afterEach(() => {
 
 describe('Rename Application', () => {
   it('Should rename a specified Application', async () => {
+    const NEW_NAME = 'RENAME TEST';
+    createApplications({appCount: 10});
+
+    const appToUpdate = getAllApplications()[5];
+
+    expect(
+      getAllApplications().find(
+        app => app.pushApplicationID === appToUpdate.pushApplicationID
+      )!.name
+    ).not.toEqual(NEW_NAME);
+
     await handler({
       url: 'http://localhost:9999',
-      appId: '2:2',
-      name: 'NewName',
+      appId: appToUpdate.pushApplicationID,
+      name: 'RENAME TEST',
       _: [] as string[],
       $0: '',
     });
@@ -38,5 +52,10 @@ describe('Rename Application', () => {
     expect(ConsoleMock.log).toHaveBeenCalledWith(
       'Application renamed successfully'
     );
+    expect(
+      getAllApplications().find(
+        app => app.pushApplicationID === appToUpdate.pushApplicationID
+      )!.name
+    ).toEqual(NEW_NAME);
   });
 });
